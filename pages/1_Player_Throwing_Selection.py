@@ -124,9 +124,9 @@ throws_radiobox = st.radio("Throws", all_throws_choices, horizontal=True)
 
 # find top receivers and their full name
 if throws_radiobox == 'All':
-    df_top_receivers = df_player_throws.groupby(['receiver_id'])['receiver_id'].count().reset_index(name='count')
+    df_top_receivers = df_player_throws.groupby(['receiver_id', 'receiver_full_name'])['receiver_id'].count().reset_index(name='count')
 else:
-    df_top_receivers = df_player_throws[df_player_throws['throw_type'] == throws_radiobox].groupby(['receiver_id', 'throw_type'])['throw_type'].count().reset_index(name='count')
+    df_top_receivers = df_player_throws[df_player_throws['throw_type'] == throws_radiobox].groupby(['receiver_id', 'receiver_full_name','throw_type'])['throw_type'].count().reset_index(name='count')
 
 df_top_receivers = df_top_receivers.sort_values(by=['count'], ascending=False)
 st.write(df_top_receivers)

@@ -17,20 +17,28 @@
     * which players are the most alike? similar roles
     * players roles evolution across the year 
     * compare young player with older player to imitate skillset
+    * Dimension reduction: t-sne
+	+ on throwing tendencies
+	+ on scoring performance
+    * 
 - Team Victories
     * select division
     * plot directed graph for team victory: the more you win against 
       team, the more edge is heavier (change color:green to red)
-- Network graph
 - Team top def
 - Team: game play, 
+- Lineup Builder
+    * duos/trios/quatuor with most off conversion / def conversion
+- Player Chemistry
+    * weighted graph
+    * list of duos/trios/quatuors
 
 **Team Victory Prediction Dashboard**
 
 
 
 
-**Databases**
+**Databases (deprecated)**
 
 - Events
     * game_id
@@ -65,6 +73,7 @@
 - [X] compute for several games
 - [X] fix when selecting all games: key error with 'game'
 - [X] Pull distance is too big
+- [ ] make sure that team throwing dataset has only data from team 
 - [ ] add receiver_id in 'Top Receivers'
 - [ ] add plots
 
@@ -73,5 +82,6 @@
 
 
 - [Streamlit Database Connection](https://docs.streamlit.io/knowledge-base/tutorials/databases)
+- [How to use graph theory to scout soccer](https://www.kdnuggets.com/2022/11/graph-theory-scout-soccer.html)
 
 

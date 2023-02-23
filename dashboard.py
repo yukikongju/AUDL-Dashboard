@@ -12,7 +12,7 @@ description = """
     * For players: what throws are each likely to throw? what is their throwing percentage for the given throw? who are they throwing to?
     * For teams: which players are hucking? dumping? swinging? who are they throwing to?
 2. Lineup Builder
-    * which duos/trios/quatuors are the most successful together? we want to assess point conversion rate
+    * which duos/trios/quatuors are the most successful together / have the most chemistry? we want to assess point conversion rate
 3. Players Fatigue
     * how efficient is a player as the game progress? we track the number of touches, turnovers, ...
 """

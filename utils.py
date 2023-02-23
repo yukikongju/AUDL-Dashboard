@@ -88,8 +88,8 @@ def compute_game_events(game_id, tsg_events):
                 y = event['y']
                 try: 
                     r_id = int(event['r']) # FIXME: investigate why no r sometimes
-                    dist = round(x+y, 3) 
-                    row = [game_id, point, r_id, None, 'Pull', dist, x, y] 
+                    throw_dist = round(math.sqrt(x**2 + y**2), 3)
+                    row = [game_id, point, r_id, None, 'Pull', throw_dist, x, y] 
                     output.append(row)
                 except:
                     print('check error')
@@ -147,14 +147,30 @@ def compute_game_throwing_selection(game_id): # HERE
     df_concat['thrower_id'] = df_concat['thrower_id'].astype('Int64')
 
 
-    # TODO: compute thrower and receiver_name
-    #  st.write(df_player_throws)
-    #  df_player_throws['receiver_full_name'] = df_player_throws['receiver_id'].apply(lambda x: df_game_players[df_game_players['id'] == x]['player.last_name'].values)
-    #  df_player_throws['receiver_full_name'] = df_player_throws['receiver_id'].apply(lambda x: x)
+    # compute thrower and receiver_name
+    receivers_full_name = compute_player_full_name_from_id(df_game_players, df_concat['receiver_id'])
+    throwers_full_name = compute_player_full_name_from_id(df_game_players, df_concat['thrower_id'])
 
+    df_concat['receiver_full_name'] = receivers_full_name
+    df_concat['thrower_full_name'] = throwers_full_name
 
     return df_concat, df_game_players
 
+
+def compute_player_full_name_from_id(df_game_players, players_id):
+    players_full_name = []
+    for player_id in players_id:
+        try: 
+            player_id = int(player_id)
+            first_name = df_game_players.loc[df_game_players['id'] == player_id, 'player.first_name'].values[0]
+            last_name = df_game_players.loc[df_game_players['id'] == player_id, 'player.last_name'].values[0]
+            full_name = ' '.join([first_name, last_name])
+        except:
+            full_name = None
+
+        players_full_name.append(full_name)
+
+    return players_full_name
 
 @st.cache
 def compute_player_throwing_selection(game_id, player_ext_id):
