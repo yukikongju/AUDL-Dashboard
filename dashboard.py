@@ -20,8 +20,19 @@ description = """
 """
 st.write(description)
 
-#  st.write("##### What information can I find in this dashboard?")
+
+
+st.write('### Ressources')
+
+ressources = """
+All data where pulled from the [official audl website](https://theaudl.com)
+using the [unofficial AUDL API](https://github.com/yukikongju/audl)
+"""
+st.write(ressources)
+
+st.write('### Suggestions')
 
 suggestions = """
-
+For any suggestions, please contact yukikongju@outlook.com
 """ 
+st.write(suggestions)

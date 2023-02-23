@@ -61,9 +61,11 @@
 
 **Player Throwing**
 
-- [ ] why event['r'] doesnt exists with t==3 sometimes
+- [X] why event['r'] doesnt exists with t==3 sometimes (skipped if error)
 - [ ] compute for several games
 - [ ] add receiver_id in 'Top Receivers'
+- [X] Pull distance is too big
+- [ ] fix when selecting all games: key error with 'game'
 - [ ] add plots
 
 

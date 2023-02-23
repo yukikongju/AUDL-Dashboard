@@ -1,6 +1,7 @@
 import streamlit as st
 import altair as alt
 import matplotlib.pyplot as plt
+import pandas as pd
 
 from audl.stats.endpoints.playerstats import PlayerStats
 from audl.stats.endpoints.teamstats import TeamStats
@@ -71,28 +72,31 @@ else:
         games_choices = find_games_id_with_city_abbrev(df_calendar, city_abrev)
 
 all_games_choices.extend(games_choices)
-game_multiselect = st.multiselect("Game", all_games_choices)
+game_multiselect = st.multiselect("Game", all_games_choices, default=games_choices[0])
 
-go_button = st.button('Go')
+#  go_button = st.button('Go')
 
 
-# TODO: updated selected games
-if go_button:
-    if game_multiselect == 'All':
-        selected_games = games_choices
-    else:
-        selected_games = game_multiselect
+# updated selected games
+if game_multiselect == 'All':
+    selected_games = games_choices
+else:
+    selected_games = game_multiselect
 
 
 # fetch players throws selection
+dfs = []
 for game_id in game_multiselect:
     df_player_throws = utils.compute_player_throwing_selection(game_id, player_ext_id)
+    dfs.append(df_player_throws)
     # show 
-    st.write('### Player Throwing Dataset')
-    st.write(df_player_throws)
 
+# concat dataframes
+st.write('### Player Throwing Dataset')
+df_player_throws = pd.concat(dfs)
+st.write(df_player_throws)
 
-###  Dashboard 1: TODO: Throws Distribution (and success rate)
+###  Dashboard 1: Throws Distribution (and success rate)
 
 st.write('### Throwing Distribution')
 
@@ -108,7 +112,7 @@ st.write(df_throws_distribution)
 #  st.write(fig)
 
 
-### Dashboard 2: TODO: Top Receivers
+### Dashboard 2: Top Receivers
 
 st.write('### Top Receivers')
 

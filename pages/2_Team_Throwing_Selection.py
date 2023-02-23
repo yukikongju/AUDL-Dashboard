@@ -9,19 +9,23 @@ from utils import loading_season_calendar, get_team_games_id, get_season_unique_
 st.markdown("# Team Throwing Selection")
 
 # select season
-season_selectbox = st.selectbox("Season", [2020, 2021, 2022])
+season_selectbox = st.selectbox("Season", [2021, 2022])
 df_calendar = loading_season_calendar(season_selectbox)
 
 # select team
 team_selectbox = st.selectbox("Team", get_season_unique_teams(df_calendar))
 
 # select games
-games_choices = ['All']
-games_choices.extend(get_team_games_id(df_calendar, team_selectbox))
-game_multiselect = st.multiselect("Game", games_choices)
+all_games_choices = ['All']
+games_choices = get_team_games_id(df_calendar, team_selectbox)
+all_games_choices.extend(games_choices)
+game_multiselect = st.multiselect("Game", all_games_choices, default=games_choices[0])
+
+
 
 # compute team throwing distribution
 if game_multiselect == 'All': # TODO
+    #  selected_games = games_choices
     pass
 else:
     selected_games = game_multiselect
@@ -32,6 +36,8 @@ for game_id in selected_games:
     df_throws, df_game_players = utils.compute_game_throwing_selection(game_id)
     dfs.append(df_throws)
 df_throws_concat = pd.concat(dfs)
+st.write('### Team Throwing Dataset')
+st.write(df_throws_concat)
 
 
 st.write('### Team Throwing Selection')
