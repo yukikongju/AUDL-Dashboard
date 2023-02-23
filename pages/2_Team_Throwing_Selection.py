@@ -24,11 +24,13 @@ game_multiselect = st.multiselect("Game", all_games_choices, default=games_choic
 
 
 # compute team throwing distribution
-if game_multiselect == 'All': # TODO
-    #  selected_games = games_choices
-    pass
+if 'All' in game_multiselect:
+    selected_games = games_choices
 else:
     selected_games = game_multiselect
+
+#  st.write(selected_games)
+#  st.write(games_choices)
 
 # compute team throwing dataset
 dfs = []

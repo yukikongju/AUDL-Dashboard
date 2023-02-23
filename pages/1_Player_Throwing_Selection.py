@@ -78,7 +78,7 @@ game_multiselect = st.multiselect("Game", all_games_choices, default=games_choic
 
 
 # updated selected games
-if game_multiselect == 'All':
+if 'All' in game_multiselect:
     selected_games = games_choices
 else:
     selected_games = game_multiselect
@@ -86,10 +86,9 @@ else:
 
 # fetch players throws selection
 dfs = []
-for game_id in game_multiselect:
+for game_id in selected_games:
     df_player_throws = utils.compute_player_throwing_selection(game_id, player_ext_id)
     dfs.append(df_player_throws)
-    # show 
 
 # concat dataframes
 st.write('### Player Throwing Dataset')
