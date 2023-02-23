@@ -3,14 +3,17 @@ import altair as alt
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from audl.stats.endpoints.playerstats import PlayerStats
+
 import utils
 
-from audl.stats.endpoints.playerstats import PlayerStats
+from static.parameters import SUPPORTED_SEASONS
+
 
 st.markdown("# Player Throwing Selection")
 
 # select season
-season_selectbox = st.selectbox("Season", [2021, 2022])
+season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS)
 
 # filter by team
 df_calendar = utils.calendar.loading_season_calendar(season_selectbox)

@@ -3,13 +3,16 @@ import pandas as pd
 
 import utils
 
+from static.parameters import SUPPORTED_SEASONS
+
+
 st.markdown("# Team Throwing Selection")
 
-# select season
-season_selectbox = st.selectbox("Season", [2021, 2022])
+# selectbox: season
+season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS)
 df_calendar = utils.calendar.loading_season_calendar(season_selectbox)
 
-# select team and compute team external id
+# selectbox: team
 team_selectbox = st.selectbox("Team", utils.calendar.get_season_unique_teams(df_calendar))
 team_ext_id = utils.calendar.get_team_external_id(df_calendar, team_selectbox)
 #  st.write(team_ext_id)
