@@ -86,10 +86,14 @@ def compute_game_events(game_id, tsg_events):
             if t == 3: # pull
                 x = event['x']
                 y = event['y']
-                r_id = int(event['r'])
-                dist = round(x**2+y**2, 3) # FIXME: number too big
-                row = [game_id, point, r_id, None, 'Pull', dist, x, y] 
-                output.append(row)
+                try: 
+                    r_id = int(event['r']) # FIXME: investigate why no r sometimes
+                    dist = round(x+y, 3) 
+                    row = [game_id, point, r_id, None, 'Pull', dist, x, y] 
+                    output.append(row)
+                except:
+                    print('check error')
+                    pass
             if t == 20: # get receiver, throwing_type, x, y
                 x = event['x']
                 y = event['y']
