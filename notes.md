@@ -75,8 +75,8 @@
 - [X] fix when selecting all games: key error with 'game'
 - [X] Pull distance is too big
 - [X] make sure that team throwing dataset has only data from team 
-- [ ] Remove 'Pull' from 'Team Throwing Selection'
-- [ ] add receiver_id in 'Top Receivers'
+- [X] Remove 'Pull' from 'Team Throwing Selection'
+- [X] add receiver_id in 'Top Receivers'
 - [ ] Add foreside or breakside in Player Throwing selection
 - [ ] add plots
 

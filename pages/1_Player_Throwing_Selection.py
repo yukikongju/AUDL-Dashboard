@@ -3,34 +3,9 @@ import altair as alt
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from audl.stats.endpoints.playerstats import PlayerStats
-from audl.stats.endpoints.teamstats import TeamStats
-from audl.stats.endpoints.gamestats import GameStats
-from audl.stats.endpoints.seasonschedule import SeasonSchedule
-
-from utils import loading_season_calendar, get_season_unique_teams, get_team_games_id
-from utils import find_games_id_with_city_abbrev
-from plotnine import ggplot, aes, geom_bar
-
 import utils
 
-@st.cache
-def load_season_players(season):
-    response = PlayerStats(season, 'total', 'all')
-    players = response.fetch_table()
-    return players
-
-
-@st.cache
-def filter_player_by_team(df_calendar, team_name):
-    response = PlayerStats(season, 'total', team_name)
-    pass
-    
-
-def get_team_id_from_name(team_name):
-    team_id = list(df_calendar[df_calendar['awayTeamName'] == team_name]['awayTeamID'].unique())[0]
-    return team_id
-
+from audl.stats.endpoints.playerstats import PlayerStats
 
 st.markdown("# Player Throwing Selection")
 
@@ -38,13 +13,13 @@ st.markdown("# Player Throwing Selection")
 season_selectbox = st.selectbox("Season", [2021, 2022])
 
 # filter by team
-df_calendar = loading_season_calendar(season_selectbox)
-df_players = load_season_players(season_selectbox)
+df_calendar = utils.calendar.loading_season_calendar(season_selectbox)
+df_players = utils.calendar.load_season_players(season_selectbox)
 filter_checkbox = st.checkbox("Filter by team")
 if filter_checkbox:
-    teams = get_season_unique_teams(df_calendar)
+    teams = utils.calendar.get_season_unique_teams(df_calendar)
     team_selectbox = st.selectbox("Team", teams)
-    team_id = get_team_id_from_name(team_selectbox)
+    team_id = utils.calendar.get_team_id_from_team_name(df_calendar, team_selectbox)
 
     # get players
     df_team_players = PlayerStats(season_selectbox, 'total', team_id).fetch_table()
@@ -64,18 +39,15 @@ player_ext_id = list(df_players[df_players['name'] == player_selectbox]['playerI
 # select game
 all_games_choices = ['All']
 if filter_checkbox:
-    games_choices = get_team_games_id(df_calendar, team_selectbox)
+    games_choices = utils.calendar.get_team_games_id(df_calendar, team_selectbox)
 else:
     if ',' in city_abrev: # FIXME: doesn't work if player is all-stars
-        games_choices = find_games_id_with_city_abbrev(df_calendar, city_abrev2)
+        games_choices = utils.calendar.find_games_id_with_city_abbrev(df_calendar, city_abrev2)
     else:
-        games_choices = find_games_id_with_city_abbrev(df_calendar, city_abrev)
+        games_choices = utils.calendar.find_games_id_with_city_abbrev(df_calendar, city_abrev)
 
 all_games_choices.extend(games_choices)
 game_multiselect = st.multiselect("Game", all_games_choices, default='All')
-
-#  go_button = st.button('Go')
-
 
 # updated selected games
 if 'All' in game_multiselect:
@@ -87,7 +59,7 @@ else:
 # fetch players throws selection
 dfs = []
 for game_id in selected_games:
-    df_player_throws = utils.compute_player_throwing_selection(game_id, player_ext_id)
+    df_player_throws = utils.throwing.compute_player_throwing_selection(game_id, player_ext_id)
     dfs.append(df_player_throws)
 
 # concat dataframes

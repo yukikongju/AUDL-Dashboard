@@ -5,37 +5,6 @@ import math
 from audl.stats.endpoints.seasonschedule import SeasonSchedule
 from audl.stats.endpoints.gamestats import GameStats
 
-@st.cache
-def loading_season_calendar(season):
-    schedule = SeasonSchedule(season)
-    calendar = schedule.get_schedule()
-    return calendar
-
-@st.cache
-def get_season_unique_teams(df_calendar):
-    teams = list(df_calendar['homeTeamNameRaw'].unique())
-    return teams
-
-
-@st.cache
-def get_team_games_id(df_calendar, team_name):
-    tmp = df_calendar[(df_calendar['awayTeamName'] == team_name) | (df_calendar['homeTeamName'] == team_name)]
-    games = list(tmp['gameID'])
-    return games
-
-@st.cache
-def find_games_id_with_city_abbrev(df_calendar, city_abrev):
-    response = df_calendar[df_calendar['gameID'].str.contains(city_abrev)]
-    games_id = list(response['gameID'])
-    games_id = list(response['gameID'])
-    return games_id
-    
-
-@st.cache
-def get_team_external_id(df_calendar, team_name):
-    team_ext_id = df_calendar.loc[df_calendar['homeTeamName'] == team_name, 'homeTeamID'].values[0].strip()
-    return team_ext_id
-
 def get_throw_type(x1, y1, x2, y2):
     """ 
     get throwing_type: pass, dump, swing, huck, dish
@@ -216,3 +185,4 @@ def compute_player_throwing_selection(game_id, player_ext_id):
     return df_player_throws
 
     
+
