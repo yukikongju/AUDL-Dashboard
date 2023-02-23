@@ -19,7 +19,7 @@ team_selectbox = st.selectbox("Team", get_season_unique_teams(df_calendar))
 all_games_choices = ['All']
 games_choices = get_team_games_id(df_calendar, team_selectbox)
 all_games_choices.extend(games_choices)
-game_multiselect = st.multiselect("Game", all_games_choices, default=games_choices[0])
+game_multiselect = st.multiselect("Game", all_games_choices, default='All')
 
 
 

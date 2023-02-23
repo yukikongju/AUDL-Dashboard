@@ -13,10 +13,8 @@ description = """
     * For teams: which players are hucking? dumping? swinging? who are they throwing to?
 2. Lineup Builder
     * which duos/trios/quatuors are the most successful together? we want to assess point conversion rate
-    * 
 3. Players Fatigue
     * how efficient is a player as the game progress? we track the number of touches, turnovers, ...
-    * 
 """
 st.write(description)
 

@@ -143,6 +143,8 @@ def compute_game_throwing_selection(game_id): # HERE
 
     # concat
     df_concat = pd.concat([df_home, df_away])
+    df_concat['receiver_id'] = df_concat['receiver_id'].astype('Int64')
+    df_concat['thrower_id'] = df_concat['thrower_id'].astype('Int64')
 
 
     # TODO: compute thrower and receiver_name

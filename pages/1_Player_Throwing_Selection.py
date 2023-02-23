@@ -72,7 +72,7 @@ else:
         games_choices = find_games_id_with_city_abbrev(df_calendar, city_abrev)
 
 all_games_choices.extend(games_choices)
-game_multiselect = st.multiselect("Game", all_games_choices, default=games_choices[0])
+game_multiselect = st.multiselect("Game", all_games_choices, default='All')
 
 #  go_button = st.button('Go')
 
