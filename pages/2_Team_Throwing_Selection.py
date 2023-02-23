@@ -12,14 +12,18 @@ st.markdown("# Team Throwing Selection")
 season_selectbox = st.selectbox("Season", [2021, 2022])
 df_calendar = loading_season_calendar(season_selectbox)
 
-# select team
+# select team and compute team external id
 team_selectbox = st.selectbox("Team", get_season_unique_teams(df_calendar))
+team_ext_id = utils.get_team_external_id(df_calendar, team_selectbox)
+#  st.write(team_ext_id)
+
 
 # select games
 all_games_choices = ['All']
 games_choices = get_team_games_id(df_calendar, team_selectbox)
 all_games_choices.extend(games_choices)
 game_multiselect = st.multiselect("Game", all_games_choices, default='All')
+
 
 
 
@@ -35,7 +39,7 @@ else:
 # compute team throwing dataset
 dfs = []
 for game_id in selected_games:
-    df_throws, df_game_players = utils.compute_game_throwing_selection(game_id)
+    df_throws = utils.compute_team_throwing_selection(game_id, team_ext_id)
     dfs.append(df_throws)
 df_throws_concat = pd.concat(dfs)
 st.write('### Team Throwing Dataset')
@@ -63,14 +67,16 @@ throws_radiobox = st.radio("Throws", all_throws_choices, horizontal=True)
 thrower_receiver_radiobox = st.radio("Thrower/Receiver", ['Thrower', 'Receiver'], horizontal=True)
 if thrower_receiver_radiobox == 'Thrower':
     top_thrower_receiver_choice = 'thrower_id'
+    top_thrower_receiver_full_name_choice = 'thrower_full_name'
 else:
     top_thrower_receiver_choice = 'receiver_id'
+    top_thrower_receiver_full_name_choice = 'receiver_full_name'
 
 # show top throwers/receivers
 if throws_radiobox == 'All':
-    df_top = df_throws_concat.groupby([top_thrower_receiver_choice])[top_thrower_receiver_choice].count().reset_index(name='count')
+    df_top = df_throws_concat.groupby([top_thrower_receiver_choice, top_thrower_receiver_full_name_choice])[top_thrower_receiver_choice].count().reset_index(name='count')
 else:
-    df_top = df_throws_concat[df_throws_concat['throw_type'] == throws_radiobox].groupby([top_thrower_receiver_choice, 'throw_type'])['throw_type'].count().reset_index(name='count')
+    df_top = df_throws_concat[df_throws_concat['throw_type'] == throws_radiobox].groupby([top_thrower_receiver_choice, top_thrower_receiver_full_name_choice, 'throw_type'])['throw_type'].count().reset_index(name='count')
 
 
 df_top['perc'] = df_top['count'] / num_throws

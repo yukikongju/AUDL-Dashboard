@@ -73,6 +73,7 @@
 - [X] compute for several games
 - [X] fix when selecting all games: key error with 'game'
 - [X] Pull distance is too big
+- [ ] Add foreside or breakside in Player Throwing selection
 - [ ] make sure that team throwing dataset has only data from team 
 - [ ] add receiver_id in 'Top Receivers'
 - [ ] add plots

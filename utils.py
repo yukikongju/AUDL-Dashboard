@@ -31,6 +31,11 @@ def find_games_id_with_city_abbrev(df_calendar, city_abrev):
     return games_id
     
 
+@st.cache
+def get_team_external_id(df_calendar, team_name):
+    team_ext_id = df_calendar.loc[df_calendar['homeTeamName'] == team_name, 'homeTeamID'].values[0]
+    return team_ext_id
+
 def get_throw_type(x1, y1, x2, y2):
     """ 
     get throwing_type: pass, dump, swing, huck, dish
@@ -127,15 +132,16 @@ def compute_game_events(game_id, tsg_events):
     return df_throws
 
 
-
 @st.cache
-def compute_game_throwing_selection(game_id): # HERE
+def compute_game_throwing_selection(game_id): 
     # get home and away events
     game = GameStats(game_id)
     events_response = game.get_events()
     home_events = events_response['homeEvents']
     away_events = events_response['awayEvents']
     df_game_players = game.get_players_metadata()
+
+    #  st.write(df_game_players)
 
     #
     df_home = compute_game_events(game_id, home_events)
@@ -146,16 +152,25 @@ def compute_game_throwing_selection(game_id): # HERE
     df_concat['receiver_id'] = df_concat['receiver_id'].astype('Int64')
     df_concat['thrower_id'] = df_concat['thrower_id'].astype('Int64')
 
-
-    # compute thrower and receiver_name
+    # compute thrower and receiver full names + team external id + TODO: player_ext_id
     receivers_full_name = compute_player_full_name_from_id(df_game_players, df_concat['receiver_id'])
     throwers_full_name = compute_player_full_name_from_id(df_game_players, df_concat['thrower_id'])
+    team_external_ids = compute_player_column_from_id(df_game_players, df_concat['thrower_id'], 'team')
 
+    #
     df_concat['receiver_full_name'] = receivers_full_name
     df_concat['thrower_full_name'] = throwers_full_name
+    df_concat['team_ext_id'] = team_external_ids
 
     return df_concat, df_game_players
 
+def compute_player_column_from_id(df_game_players, players_id, column_name):
+    team_external_ids = []
+    for player_id in players_id:
+        player_id = int(player_id)
+        team_id = df_game_players.loc[df_game_players['id'] == player_id, column_name].values[0]
+        team_external_ids.append(team_id)
+    return team_external_ids
 
 def compute_player_full_name_from_id(df_game_players, players_id):
     players_full_name = []
@@ -173,8 +188,19 @@ def compute_player_full_name_from_id(df_game_players, players_id):
     return players_full_name
 
 @st.cache
+def compute_team_throwing_selection(game_id, team_ext_id):
+    # compute game throwing selection
+    df_throws, df_game_players = compute_game_throwing_selection(game_id)
+
+    # filter by team
+    df_team_throws = df_throws[df_throws['team_ext_id'] == team_ext_id]
+
+    return df_team_throws
+
+
+@st.cache
 def compute_player_throwing_selection(game_id, player_ext_id):
-    # 
+    # compute game throwing selection
     df_throws, df_game_players = compute_game_throwing_selection(game_id)
 
     # get player id from external id
