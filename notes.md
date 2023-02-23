@@ -56,6 +56,17 @@
 - Fetch Player
 - Fetch Team
 
+
+## TODOs
+
+**Player Throwing**
+
+- [ ] why event['r'] doesnt exists with t==3 sometimes
+- [ ] compute for several games
+- [ ] add receiver_id in 'Top Receivers'
+- [ ] add plots
+
+
 ## Ressources
 
 

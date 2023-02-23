@@ -139,6 +139,13 @@ def compute_game_throwing_selection(game_id): # HERE
     # concat
     df_concat = pd.concat([df_home, df_away])
 
+
+    # TODO: compute thrower and receiver_name
+    #  st.write(df_player_throws)
+    #  df_player_throws['receiver_full_name'] = df_player_throws['receiver_id'].apply(lambda x: df_game_players[df_game_players['id'] == x]['player.last_name'].values)
+    #  df_player_throws['receiver_full_name'] = df_player_throws['receiver_id'].apply(lambda x: x)
+
+
     return df_concat, df_game_players
 
 
@@ -147,18 +154,12 @@ def compute_player_throwing_selection(game_id, player_ext_id):
     # 
     df_throws, df_game_players = compute_game_throwing_selection(game_id)
 
-    st.write(df_game_players)
-
     # get player id from external id
     player_id = list(df_game_players[df_game_players['player.ext_player_id'] == player_ext_id]['id'])[0]
 
     # get player throws
     df_player_throws = df_throws[df_throws['thrower_id'] == player_id]
 
-    # TODO: compute receiver_name
-    #  st.write(df_player_throws)
-    #  df_player_throws['receiver_full_name'] = df_player_throws['receiver_id'].apply(lambda x: df_game_players[df_game_players['id'] == x]['player.last_name'].values)
-    #  df_player_throws['receiver_full_name'] = df_player_throws['receiver_id'].apply(lambda x: x)
 
     return df_player_throws
 
