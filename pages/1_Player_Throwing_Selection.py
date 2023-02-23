@@ -103,6 +103,7 @@ st.write('### Throwing Distribution')
 num_throws = int(df_player_throws.shape[0])
 df_throws_distribution = df_player_throws.groupby(['throw_type'])['throw_type'].count().reset_index(name='count')
 df_throws_distribution['perc'] = df_throws_distribution['count'] / num_throws
+df_throws_distribution = df_throws_distribution.sort_values(by='count', ascending=False).reset_index(drop=True)
 st.write(df_throws_distribution)
 
 # TODO: building plot
@@ -128,7 +129,7 @@ if throws_radiobox == 'All':
 else:
     df_top_receivers = df_player_throws[df_player_throws['throw_type'] == throws_radiobox].groupby(['receiver_id', 'receiver_full_name','throw_type'])['throw_type'].count().reset_index(name='count')
 
-df_top_receivers = df_top_receivers.sort_values(by=['count'], ascending=False)
+df_top_receivers = df_top_receivers.sort_values(by=['count'], ascending=False).reset_index(drop=True)
 st.write(df_top_receivers)
 
 
