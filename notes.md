@@ -13,6 +13,7 @@
 - Comparing Teams
     * select throw / plays 
     * show team with highest throw attempt / completion
+    * Comparing Team tendencies
 - Comparing Players
     * which players are the most alike? similar roles
     * players roles evolution across the year 
@@ -73,16 +74,25 @@
 - [X] compute for several games
 - [X] fix when selecting all games: key error with 'game'
 - [X] Pull distance is too big
-- [ ] Add foreside or breakside in Player Throwing selection
-- [ ] make sure that team throwing dataset has only data from team 
+- [X] make sure that team throwing dataset has only data from team 
+- [ ] Remove 'Pull' from 'Team Throwing Selection'
 - [ ] add receiver_id in 'Top Receivers'
+- [ ] Add foreside or breakside in Player Throwing selection
 - [ ] add plots
 
+
+**Refractor**
+
+- refractor utils into:
+    * calendar: season schedule
+    * throwing selection
+    * efficiency: player and team efficiency
 
 ## Ressources
 
 
 - [Streamlit Database Connection](https://docs.streamlit.io/knowledge-base/tutorials/databases)
 - [How to use graph theory to scout soccer](https://www.kdnuggets.com/2022/11/graph-theory-scout-soccer.html)
+- [Network Analysis with Python](https://www.youtube.com/watch?v=x6PNcuZk83g)
 
 

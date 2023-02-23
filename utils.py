@@ -33,7 +33,7 @@ def find_games_id_with_city_abbrev(df_calendar, city_abrev):
 
 @st.cache
 def get_team_external_id(df_calendar, team_name):
-    team_ext_id = df_calendar.loc[df_calendar['homeTeamName'] == team_name, 'homeTeamID'].values[0]
+    team_ext_id = df_calendar.loc[df_calendar['homeTeamName'] == team_name, 'homeTeamID'].values[0].strip()
     return team_ext_id
 
 def get_throw_type(x1, y1, x2, y2):
@@ -167,8 +167,11 @@ def compute_game_throwing_selection(game_id):
 def compute_player_column_from_id(df_game_players, players_id, column_name):
     team_external_ids = []
     for player_id in players_id:
-        player_id = int(player_id)
-        team_id = df_game_players.loc[df_game_players['id'] == player_id, column_name].values[0]
+        try:
+            player_id = int(player_id)
+            team_id = df_game_players.loc[df_game_players['id'] == player_id, column_name].values[0]
+        except:
+            team_id = None
         team_external_ids.append(team_id)
     return team_external_ids
 

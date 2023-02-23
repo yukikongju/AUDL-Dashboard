@@ -25,8 +25,6 @@ all_games_choices.extend(games_choices)
 game_multiselect = st.multiselect("Game", all_games_choices, default='All')
 
 
-
-
 # compute team throwing distribution
 if 'All' in game_multiselect:
     selected_games = games_choices
@@ -51,17 +49,11 @@ st.write('### Team Throwing Selection')
 num_throws = int(df_throws_concat.shape[0])
 df_throws_distribution = df_throws_concat.groupby(['throw_type'])['throw_type'].count().reset_index(name='count')
 df_throws_distribution['perc'] = df_throws_distribution['count'] / num_throws
+df_throws_distribution = df_throws_distribution.sort_values(by=['count'], ascending=False).reset_index(drop=True)
 st.write(df_throws_distribution)
 
 
 st.write('### Top Throwers/Receivers')
-
-# radio button: throw_type
-all_throws_choices = ['All']
-throws_choices = list(df_throws_concat['throw_type'].unique())
-throws_choices = [choice for choice in throws_choices if choice not in ['Throwaway', 'Pull']]
-all_throws_choices.extend(throws_choices)
-throws_radiobox = st.radio("Throws", all_throws_choices, horizontal=True)
 
 # radio button: thrower/receiver
 thrower_receiver_radiobox = st.radio("Thrower/Receiver", ['Thrower', 'Receiver'], horizontal=True)
@@ -72,6 +64,16 @@ else:
     top_thrower_receiver_choice = 'receiver_id'
     top_thrower_receiver_full_name_choice = 'receiver_full_name'
 
+
+# radio button: throw_type
+all_throws_choices = ['All']
+throws_choices = list(df_throws_concat['throw_type'].unique())
+if thrower_receiver_radiobox == 'Receiver':
+    throws_choices = [choice for choice in throws_choices if choice not in ['Throwaway', 'Pull']]
+all_throws_choices.extend(throws_choices)
+throws_radiobox = st.radio("Throws", all_throws_choices, horizontal=True)
+
+
 # show top throwers/receivers
 if throws_radiobox == 'All':
     df_top = df_throws_concat.groupby([top_thrower_receiver_choice, top_thrower_receiver_full_name_choice])[top_thrower_receiver_choice].count().reset_index(name='count')
@@ -80,5 +82,5 @@ else:
 
 
 df_top['perc'] = df_top['count'] / num_throws
-df_top = df_top.sort_values(by=['count'], ascending=False)
+df_top = df_top.sort_values(by=['count'], ascending=False).reset_index(drop=True)
 st.write(df_top)
