@@ -123,6 +123,7 @@ def compute_game_events(game_id, tsg_events):
     columns_names = ['game_id', 'point' ,'thrower_id', 'receiver_id', 'throw_type', 'throw_distance', 'x', 'y']
     df_throws = pd.DataFrame(output, columns=columns_names)
     df_throws['receiver_id'] = df_throws['receiver_id'].astype('Int64')
+    df_throws['thrower_id'] = df_throws['thrower_id'].astype('Int64')
     return df_throws
 
 
