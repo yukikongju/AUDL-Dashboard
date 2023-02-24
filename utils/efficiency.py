@@ -5,8 +5,7 @@ import itertools
 from audl.stats.endpoints.gamestats import GameStats
 
 
-
-#  @st.cache
+@st.cache_data
 def compute_team_efficiency(game_id, team_ext_id, num_in_pairings, position_radiobox, efficiency_radiobox):
     """ 
     Given game_id, pairings

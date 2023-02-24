@@ -101,7 +101,7 @@ def compute_game_events(game_id, tsg_events):
     return df_throws
 
 
-@st.cache
+@st.cache_data
 def compute_game_throwing_selection(game_id): 
     # get home and away events
     game = GameStats(game_id)
@@ -159,7 +159,7 @@ def compute_player_full_name_from_id(df_game_players, players_id):
 
     return players_full_name
 
-@st.cache
+@st.cache_data
 def compute_team_throwing_selection(game_id, team_ext_id):
     # compute game throwing selection
     df_throws, df_game_players = compute_game_throwing_selection(game_id)
@@ -170,7 +170,7 @@ def compute_team_throwing_selection(game_id, team_ext_id):
     return df_team_throws
 
 
-@st.cache
+@st.cache_data
 def compute_player_throwing_selection(game_id, player_ext_id):
     # compute game throwing selection
     df_throws, df_game_players = compute_game_throwing_selection(game_id)
