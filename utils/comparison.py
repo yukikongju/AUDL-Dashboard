@@ -6,6 +6,8 @@ import plotly.express as px
 
 from sklearn.manifold import TSNE, Isomap, LocallyLinearEmbedding
 from sklearn.decomposition import PCA
+from sklearn.cluster import AgglomerativeClustering, DBSCAN, KMeans, OPTICS
+from sklearn.mixture import GaussianMixture
 
 from static.parameters import TEAM_STATS_PER_DICT, TEAM_STATS_VS_DICT, PLAYER_STATS_PER_DICT
 from audl.stats.endpoints.teamstats import TeamStats
@@ -25,7 +27,6 @@ def load_team_data(season, per_radiobox, vs_radiobox):
 @st.cache_data
 def get_season_teams(season):
     table = TeamStats(season, 'total', 'team').get_table()
-    #  st.write(table)
     teams = list(table['teamName'])
     return teams
     
@@ -44,28 +45,56 @@ def load_player_data(season, per_radio, team_ext_id): # TODO
 
 
 @st.cache_data
-def plot_dimension_reduction(dataset, dimension_reduction_radiobox, comparison_id, comparison_name):
+def plot_comparison(dataset, dimension_reduction_radiobox, cluster_radiobox, comparison_id, comparison_name):
     # remove categorical data and drop NAs
     df_subset = dataset.drop([comparison_id, comparison_name], axis=1)
     df_subset = df_subset.dropna()
     team_names = dataset.dropna()[comparison_name]
 
-    if dimension_reduction_radiobox == 'TSNE':
-        model = TSNE(n_components=2, perplexity=5)
-    elif dimension_reduction_radiobox == 'PCA':
-        model = PCA(n_components=3)
-    elif dimension_reduction_radiobox == 'Isomap':
-        model = Isomap(n_components=3)
-    elif dimension_reduction_radiobox == 'LLE':
-        model = LocallyLinearEmbedding(n_components=5)
-
+    # perform dimension reduction
+    model = create_dimension_reduction_model(dimension_reduction_radiobox)
     reductions = model.fit_transform(df_subset)
     df_subset['x'], df_subset['y'] = reductions[:, 0], reductions[:, 1]
 
-    # TODO: make clusters
+    # make clusters
+    cluster = create_cluster_model(cluster_radiobox)
+    labels = get_cluster_predictions(cluster, df_subset, cluster_radiobox)
 
-    #  fig = plt.figure()
-    #  sns.scatterplot(data=df_subset, x='x', y='y', hue='y', alpha=0.3)
-    fig = px.scatter(df_subset['x'], df_subset['y'], color=team_names)
+    fig = px.scatter(df_subset['x'], df_subset['y'], text=team_names, color=labels)
     return fig
+
+def get_cluster_predictions(cluster, dataset, algorith_name):
+    if algorith_name in ['KMeans', 'GaussianMixture']:
+        cluster.fit(df_subset)
+        labels = cluster.predict(dataset)
+    else:
+        labels = cluster.fit_predict(dataset)
+    return labels
+
+
+def create_cluster_model(algorithm_name):
+    if algorithm_name == 'K-Means':
+        model = KMeans(n_clusters=4)
+    elif algorithm_name == 'DBSCAN':
+        model = DBSCAN(eps=0.3, min_samples=4)
+    elif algorithm_name == 'Agglomerative':
+        model = AgglomerativeClustering(n_clusters=3)
+    elif algorithm_name == 'OPTICS':
+        model = OPTICS(eps=0.08, min_samples=6)
+    elif algorithm_name == 'Gaussian':
+        model = GaussianMixture(n_components=4)
+    return model
     
+    
+def create_dimension_reduction_model(algorithm_name):
+    if algorithm_name == 'TSNE':
+        model = TSNE(n_components=2, perplexity=5)
+    elif algorithm_name == 'PCA':
+        model = PCA(n_components=3)
+    elif algorithm_name == 'Isomap':
+        model = Isomap(n_components=3)
+    elif algorithm_name == 'LLE':
+        model = LocallyLinearEmbedding(n_components=5)
+    return model
+    
+

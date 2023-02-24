@@ -49,8 +49,11 @@ elif comparison_selectbox == 'Player':
     st.markdown('### Player Comparison')
     comparison_id, comparison_name = 'playerID', 'name'
 
-#  # radiobox: dimension reduction
-dimension_reduction_radiobox = st.radio('Dimension Reduction Algorithms', ['TSNE', 'PCA', 'LLE', 'Isomap'], horizontal=True)
+# radiobox: dimension reduction
+dimension_reduction_radiobox = st.radio('Dimension Reduction Algorithm', ['TSNE', 'PCA', 'LLE', 'Isomap'], horizontal=True)
 
-fig = utils.comparison.plot_dimension_reduction(df_performance, dimension_reduction_radiobox, comparison_id, comparison_name)
+# radiobox: Cluster Algorithms
+cluster_radiobox = st.radio('Cluster Algorithm', ['K-Means', 'DBSCAN', 'Agglomerative', 'OPTICS', 'Gaussian'], horizontal=True)
+
+fig = utils.comparison.plot_comparison(df_performance, dimension_reduction_radiobox, cluster_radiobox, comparison_id, comparison_name)
 st.plotly_chart(fig)
