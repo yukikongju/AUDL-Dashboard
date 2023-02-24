@@ -88,6 +88,10 @@
 - [X] Compute Players Efficiency
 - [ ] compute for all games
 
+**Cluster**
+
+- [X] doesn't show all players for royal on clustering
+
 ## Ressources
 
 

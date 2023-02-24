@@ -48,8 +48,10 @@ def load_player_data(season, per_radio, team_ext_id): # TODO
 def plot_comparison(dataset, dimension_reduction_radiobox, cluster_radiobox, comparison_id, comparison_name):
     # remove categorical data and drop NAs
     df_subset = dataset.drop([comparison_id, comparison_name], axis=1)
-    df_subset = df_subset.dropna()
-    team_names = dataset.dropna()[comparison_name]
+
+    # replace NA values with -1
+    df_subset = df_subset.fillna(-1)
+    team_names = dataset.fillna(-1)[comparison_name]
 
     # perform dimension reduction
     model = create_dimension_reduction_model(dimension_reduction_radiobox)
