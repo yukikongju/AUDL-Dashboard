@@ -91,6 +91,7 @@
 **Cluster**
 
 - [X] doesn't show all players for royal on clustering
+- [X] Add sliders for hyperparameters
 
 ## Ressources
 

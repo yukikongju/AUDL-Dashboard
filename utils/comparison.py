@@ -44,8 +44,8 @@ def load_player_data(season, per_radio, team_ext_id): # TODO
     return table
 
 
-@st.cache_data
-def plot_comparison(dataset, dimension_reduction_radiobox, cluster_radiobox, comparison_id, comparison_name):
+#  @st.cache_data
+def plot_comparison(dataset, dimension_reduction_radiobox, cluster_radiobox, comparison_id, comparison_name, dimension_reduction_hyperparams, cluster_hyperparams):
     # remove categorical data and drop NAs
     df_subset = dataset.drop([comparison_id, comparison_name], axis=1)
 
@@ -54,12 +54,12 @@ def plot_comparison(dataset, dimension_reduction_radiobox, cluster_radiobox, com
     team_names = dataset.fillna(-1)[comparison_name]
 
     # perform dimension reduction
-    model = create_dimension_reduction_model(dimension_reduction_radiobox)
+    model = create_dimension_reduction_model(dimension_reduction_radiobox, dimension_reduction_hyperparams)
     reductions = model.fit_transform(df_subset)
     df_subset['x'], df_subset['y'] = reductions[:, 0], reductions[:, 1]
 
     # make clusters
-    cluster = create_cluster_model(cluster_radiobox)
+    cluster = create_cluster_model(cluster_radiobox, cluster_hyperparams)
     labels = get_cluster_predictions(cluster, df_subset, cluster_radiobox)
 
     fig = px.scatter(df_subset['x'], df_subset['y'], text=team_names, color=labels)
@@ -74,29 +74,29 @@ def get_cluster_predictions(cluster, dataset, algorith_name):
     return labels
 
 
-def create_cluster_model(algorithm_name):
+def create_cluster_model(algorithm_name, hyperparameters):
     if algorithm_name == 'K-Means':
-        model = KMeans(n_clusters=4)
+        model = KMeans(n_clusters=hyperparameters)
     elif algorithm_name == 'DBSCAN':
-        model = DBSCAN(eps=0.3, min_samples=4)
+        model = DBSCAN(eps=0.3, min_samples=hyperparameters)
     elif algorithm_name == 'Agglomerative':
-        model = AgglomerativeClustering(n_clusters=3)
+        model = AgglomerativeClustering(n_clusters=hyperparameters)
     elif algorithm_name == 'OPTICS':
-        model = OPTICS(eps=0.08, min_samples=6)
+        model = OPTICS(eps=0.08, min_samples=hyperparameters)
     elif algorithm_name == 'Gaussian':
-        model = GaussianMixture(n_components=4)
+        model = GaussianMixture(n_components=hyperparameters)
     return model
     
     
-def create_dimension_reduction_model(algorithm_name):
+def create_dimension_reduction_model(algorithm_name, hyperparameters):
     if algorithm_name == 'TSNE':
-        model = TSNE(n_components=2, perplexity=5)
+        model = TSNE(n_components=hyperparameters, perplexity=5)
     elif algorithm_name == 'PCA':
-        model = PCA(n_components=3)
+        model = PCA(n_components=hyperparameters)
     elif algorithm_name == 'Isomap':
-        model = Isomap(n_components=3)
+        model = Isomap(n_components=hyperparameters)
     elif algorithm_name == 'LLE':
-        model = LocallyLinearEmbedding(n_components=5)
+        model = LocallyLinearEmbedding(n_components=hyperparameters)
     return model
     
 

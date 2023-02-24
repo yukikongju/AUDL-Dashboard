@@ -50,10 +50,14 @@ elif comparison_selectbox == 'Player':
     comparison_id, comparison_name = 'playerID', 'name'
 
 # radiobox: dimension reduction
-dimension_reduction_radiobox = st.radio('Dimension Reduction Algorithm', ['TSNE', 'PCA', 'LLE', 'Isomap'], horizontal=True)
+dimension_reduction_radiobox = st.radio('Dimension Reduction Algorithm', ['PCA', 'TSNE', 'LLE', 'Isomap'], horizontal=True)
 
 # radiobox: Cluster Algorithms
 cluster_radiobox = st.radio('Cluster Algorithm', ['K-Means', 'DBSCAN', 'Agglomerative', 'OPTICS', 'Gaussian'], horizontal=True)
 
-fig = utils.comparison.plot_comparison(df_performance, dimension_reduction_radiobox, cluster_radiobox, comparison_id, comparison_name)
+# slider: 
+dimension_reduction_hyperparams_slider = st.slider('Dimension Reduction Hyperparameters', 1, 15)
+cluster_hyperparams_slider = st.slider('Cluster Hyperparameters', 1, 15)
+
+fig = utils.comparison.plot_comparison(df_performance, dimension_reduction_radiobox, cluster_radiobox, comparison_id, comparison_name, dimension_reduction_hyperparams_slider, cluster_hyperparams_slider)
 st.plotly_chart(fig)
