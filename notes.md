@@ -68,8 +68,6 @@
 
 ## TODOs
 
-**Player Throwing**
-
 - [X] why event['r'] doesnt exists with t==3 sometimes (skipped if error)
 - [X] compute for several games
 - [X] fix when selecting all games: key error with 'game'
@@ -77,16 +75,18 @@
 - [X] make sure that team throwing dataset has only data from team 
 - [X] Remove 'Pull' from 'Team Throwing Selection'
 - [X] add receiver_id in 'Top Receivers'
+- [X] refractor utils into:
+
+**Player Throwing Selection**
+
 - [ ] Add foreside or breakside in Player Throwing selection
 - [ ] add plots
 
+**Team Chemistry**
 
-**Refractor**
-
-- refractor utils into:
-    * calendar: season schedule
-    * throwing selection
-    * efficiency: player and team efficiency
+- [X] Get Lineup outcomes by points as json (audl API)
+- [X] Compute Players Efficiency
+- [ ] compute for all games
 
 ## Ressources
 
