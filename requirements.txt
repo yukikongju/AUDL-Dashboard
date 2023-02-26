@@ -8,3 +8,4 @@ requests
 numpy
 lxml
 html5lib
+seaborn

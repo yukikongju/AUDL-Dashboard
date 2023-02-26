@@ -72,7 +72,7 @@
 **Team Throwing Selection**
 
 - [ ] Add Download Button for dataset
-- [ ] Add Throwing Sequences + side: pairings (2,3,4)
+- [X] Add Throwing Sequences + side: pairings (2,3,4)
 
 **Team Chemistry**
 
@@ -93,7 +93,7 @@
 - [ ] Make weighted graph for throws
 - [ ] get player picture?
 
-**Throwing Location**
+**Throwing Location Analysis**
 
 - [ ] Is disc location Markovian?
 - [ ] Discovering best strategy in each position using RL and probability (simulation)
