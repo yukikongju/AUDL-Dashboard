@@ -9,3 +9,5 @@ numpy
 lxml
 html5lib
 seaborn
+plotly
+scikit-learn
