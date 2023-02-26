@@ -3,3 +3,8 @@ matplotlib
 streamlit==1.19.0
 audl==0.0.11
 altair
+BeautifulSoup4
+requests
+numpy
+lxml
+html5lib
