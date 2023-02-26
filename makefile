@@ -1,2 +1,2 @@
 run: 
-	streamlit run dashboard.py
+	streamlit run Home.py
