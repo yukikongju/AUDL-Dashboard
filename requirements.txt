@@ -1,0 +1,5 @@
+pandas
+matplotlib
+streamlit=1.19.0
+audl=0.0.11
+altair
