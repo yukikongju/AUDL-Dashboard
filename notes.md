@@ -118,5 +118,6 @@ Ideas:
 - [Network Analysis with Python](https://www.youtube.com/watch?v=x6PNcuZk83g)
 - [Streamlit agraph](https://github.com/ChrisDelClea/streamlit-agraph)
 - [Stanford CS224W - Analysis of Network Projects](http://snap.stanford.edu/class/cs224w-2017/projects.html)
+- [Custom url in streamlit](https://discuss.streamlit.io/t/custom-domain-for-streamlit-sharing/8751/5)
 
 
