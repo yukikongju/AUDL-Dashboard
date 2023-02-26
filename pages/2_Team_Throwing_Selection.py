@@ -3,13 +3,13 @@ import pandas as pd
 
 import utils
 
-from static.parameters import SUPPORTED_SEASONS
+from static.parameters import SUPPORTED_SEASONS, CURRENT_SEASON
 
 
 st.markdown("# Team Throwing Selection")
 
 # selectbox: season
-season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS)
+season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS, index=SUPPORTED_SEASONS.index(CURRENT_SEASON))
 df_calendar = utils.calendar.loading_season_calendar(season_selectbox)
 
 # selectbox: team

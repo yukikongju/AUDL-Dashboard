@@ -7,13 +7,13 @@ from audl.stats.endpoints.playerstats import PlayerStats
 
 import utils
 
-from static.parameters import SUPPORTED_SEASONS
+from static.parameters import SUPPORTED_SEASONS, CURRENT_SEASON
 
 
 st.markdown("# Player Throwing Selection")
 
 # select season
-season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS)
+season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS, index=SUPPORTED_SEASONS.index(CURRENT_SEASON))
 
 # filter by team
 df_calendar = utils.calendar.loading_season_calendar(season_selectbox)
