@@ -56,8 +56,8 @@ dimension_reduction_radiobox = st.radio('Dimension Reduction Algorithm', ['PCA',
 cluster_radiobox = st.radio('Cluster Algorithm', ['K-Means', 'DBSCAN', 'Agglomerative', 'OPTICS', 'Gaussian'], horizontal=True)
 
 # slider: 
-dimension_reduction_hyperparams_slider = st.slider('Dimension Reduction Hyperparameters', 1, 15)
-cluster_hyperparams_slider = st.slider('Cluster Hyperparameters', 1, 15)
+dimension_reduction_hyperparams_slider = st.slider('Dimension Reduction Hyperparameters', 1, 15, value=2)
+cluster_hyperparams_slider = st.slider('Cluster Hyperparameters', 1, 15, value=2)
 
 fig = utils.comparison.plot_comparison(df_performance, dimension_reduction_radiobox, cluster_radiobox, comparison_id, comparison_name, dimension_reduction_hyperparams_slider, cluster_hyperparams_slider)
 st.plotly_chart(fig)

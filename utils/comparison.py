@@ -14,7 +14,7 @@ from audl.stats.endpoints.teamstats import TeamStats
 from audl.stats.endpoints.playerstats import PlayerStats
 
 
-@st.cache_data
+#  @st.cache_data
 def load_team_data(season, per_radiobox, vs_radiobox):
     # convert radiobox inputs
     per = TEAM_STATS_PER_DICT.get(per_radiobox)
@@ -37,7 +37,7 @@ def get_team_external_id_from_name(season, team_name):
     return team_ext_id
     
 
-@st.cache_data
+#  @st.cache_data
 def load_player_data(season, per_radio, team_ext_id): # TODO
     per = PLAYER_STATS_PER_DICT.get(per_radio)
     table = PlayerStats(season, per, team_ext_id).fetch_table()

@@ -5,6 +5,9 @@ import math
 from audl.stats.endpoints.seasonschedule import SeasonSchedule
 from audl.stats.endpoints.gamestats import GameStats
 
+from static.parameters import THROWS_TYPE_DICT, THROWS_TYPE_DICT_INVERSE
+
+
 def get_throw_type(x1, y1, x2, y2):
     """ 
     get throwing_type: pass, dump, swing, huck, dish
@@ -184,5 +187,40 @@ def compute_player_throwing_selection(game_id, player_ext_id):
 
     return df_player_throws
 
-    
+
+def compute_team_throwing_sequence(df_team_throws, sequence_length):
+    # remove pulls 
+    df_subset = df_team_throws[df_team_throws['throw_type'] != 'Pull']
+
+    # get all throws in points in list
+    points_sequences = df_subset.groupby('point')['throw_type'].apply(list)
+
+    # get sequence count
+    sequence_count = {}
+    for sequence in points_sequences:
+        current_sequence = []
+        if len(sequence) > sequence_length:
+            for throw in sequence[:-sequence_length]:
+                throw_hash = str(THROWS_TYPE_DICT.get(throw))
+                if len(current_sequence) < sequence_length:
+                    current_sequence.append(throw_hash)
+                else:
+                    # add current sequence to sequence count
+                    sequence_hash = ''.join(current_sequence)
+                    sequence_count[sequence_hash] = sequence_count.get(sequence_hash, 1) + 1
+
+                    #
+                    current_sequence = [throw_hash]
+        else: 
+            pass
+
+    # sort by value counts
+    sorted_counts = sorted(sequence_count.items(), key=lambda x: x[1], reverse=True)
+
+    # convert sequence hash to 
+    df_sequence = pd.DataFrame(sorted_counts, columns=['hash', 'count'])
+    df_sequence['sequence'] = df_sequence['hash'].apply(lambda x: [THROWS_TYPE_DICT_INVERSE.get(int(i)) for i in x ])
+    df_sequence = df_sequence.drop(['hash'], axis=1)
+
+    return df_sequence
 

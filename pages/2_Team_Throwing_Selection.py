@@ -40,9 +40,14 @@ for game_id in selected_games:
     df_throws = utils.throwing.compute_team_throwing_selection(game_id, team_ext_id)
     dfs.append(df_throws)
 df_throws_concat = pd.concat(dfs)
+
+
+#  ------------------------------------------------------------------------
+
 st.write('### Team Throwing Dataset')
 st.write(df_throws_concat)
 
+#  ------------------------------------------------------------------------
 
 st.write('### Team Throwing Selection')
 
@@ -52,6 +57,17 @@ df_throws_distribution['perc'] = df_throws_distribution['count'] / num_throws
 df_throws_distribution = df_throws_distribution.sort_values(by=['count'], ascending=False).reset_index(drop=True)
 st.write(df_throws_distribution)
 
+
+#  ------------------------------------------------------------------------
+
+st.write('### Team Throwing Sequence')
+
+sequence_length_radiobox = st.radio('Sequence Length', [2,3,4,5], horizontal=True)
+df_throwing_sequence = utils.throwing.compute_team_throwing_sequence(df_throws_concat, sequence_length_radiobox)
+st.write(df_throwing_sequence)
+
+
+#  ------------------------------------------------------------------------
 
 st.write('### Top Throwers/Receivers')
 

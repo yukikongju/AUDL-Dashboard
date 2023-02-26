@@ -30,34 +30,15 @@
 - Team: game play, 
 - Lineup Builder
     * duos/trios/quatuor with most off conversion / def conversion
+    * graph connections: 
+	+ nodes_between: form group (see rivzikmath)
+	+ strongly connected component (see The Historical Network Research Community)
 - Player Chemistry
     * weighted graph
     * list of duos/trios/quatuors
 
 **Team Victory Prediction Dashboard**
 
-
-
-
-**Databases (deprecated)**
-
-- Events
-    * game_id
-    * point_id
-    * thrower_id
-    * receiver_id
-    * throwing_type_id
-    * time_stamp
-    * season_year
-- Player
-    * player_id
-    * first_name
-    * last_name
-    * birth_date
-    * season_year
-    * team
-- Team
-    * team_id
 
 **Fetching the Data**
 
@@ -67,6 +48,11 @@
 
 
 ## TODOs
+
+1. Team Throwing: Throwing Sequence
+2. Team Chemistry: Graph
+3. RL Simulation: EV for disc location
+
 
 - [X] why event['r'] doesnt exists with t==3 sometimes (skipped if error)
 - [X] compute for several games
@@ -82,6 +68,12 @@
 - [ ] Add foreside or breakside in Player Throwing selection
 - [ ] add plots
 
+
+**Team Throwing Selection**
+
+- [ ] Add Download Button for dataset
+- [ ] Add Throwing Sequences + side: pairings (2,3,4)
+
 **Team Chemistry**
 
 - [X] Get Lineup outcomes by points as json (audl API)
@@ -93,11 +85,35 @@
 - [X] doesn't show all players for royal on clustering
 - [X] Add sliders for hyperparameters
 
+**Graph**
+
+- [ ] Make weighted graph for throws
+- [ ] get player picture?
+
+**Throwing Location**
+
+- [ ] Is disc location Markovian?
+- [ ] Discovering best strategy in each position using RL and probability (simulation)
+
+
+## Paper: Understanding Throwing Selection in Ultimate using Social Network Analysis
+
+Ideas:
+- Previous work in other sports: NBA, NFL, 
+- The problem: 
+- What we learned:
+    * understanding player chemistry
+    * define roles in audl: make cluster from throwing distribution
+    * understanding throw selection relative to field position
+    * throwing sequences: (dump-swing), (huck-dish), ()
+
 ## Ressources
 
 
 - [Streamlit Database Connection](https://docs.streamlit.io/knowledge-base/tutorials/databases)
 - [How to use graph theory to scout soccer](https://www.kdnuggets.com/2022/11/graph-theory-scout-soccer.html)
 - [Network Analysis with Python](https://www.youtube.com/watch?v=x6PNcuZk83g)
+- [Streamlit agraph](https://github.com/ChrisDelClea/streamlit-agraph)
+- [Stanford CS224W - Analysis of Network Projects](http://snap.stanford.edu/class/cs224w-2017/projects.html)
 
 
