@@ -33,8 +33,6 @@ else:
     selected_games = game_multiselect
 
 
-
-
 #  -----------------------------------------------------------------------
 
 st.write('### Players Connections')
@@ -44,21 +42,46 @@ st.write('### Players Connections')
 
 st.write('### Players Efficiency')
 
-# radiobox: offense/defense position 
-position_radiobox = st.radio("Position", ['Offense', 'Defense'], horizontal=True)
-
 # radiobox: pairings
 pairings_dict = {'Single': 1, 'Duos': 2, 'Trios': 3, 'Quatuors': 4}
 pairings_radiobox = st.radio("Pairings", pairings_dict.keys(), horizontal=True)
 pairing_number = pairings_dict.get(pairings_radiobox)
 
+
+# radiobox: offense/defense position 
+position_radiobox = st.radio("Position", ['Offense', 'Defense'], horizontal=True)
+
+
 # radiobox: count/percentage efficiency
 efficiency_radiobox = st.radio("Efficiency", ['Count', 'Percentage'], horizontal=True)
 
 
+df_concat = utils.efficiency.load_players_efficiency_data(team_ext_id, selected_games, pairing_number)
 
-# computing players efficiency
-for game_id in selected_games:
-    df_efficiency = utils.efficiency.compute_team_efficiency(game_id, team_ext_id, pairing_number, position_radiobox, efficiency_radiobox)
-    st.write(df_efficiency)
+# sum all pairings off/def wins
+df_efficiency = df_concat.groupby(['pairing_hash']).sum().reset_index()
 
+# compute percentage
+
+offensive_percentages, defensive_percentages = [], []
+for index, row in df_efficiency.iterrows():
+    offensive_percentages.append(round(row['offense_win'] / (row['offense_win'] + row['offense_loss'] + row['offense_incomplete'] + 0.00001), 3))
+    defensive_percentages.append(round(row['defense_win'] / (row['defense_win'] + row['defense_loss'] + row['defense_incomplete'] + 0.00001), 3))
+
+df_efficiency['offense_perc'] = offensive_percentages
+df_efficiency['defense_perc'] = defensive_percentages
+
+# sort by
+sorting_key = utils.efficiency._get_sorting_key(position_radiobox, efficiency_radiobox)
+df_efficiency = df_efficiency.sort_values(by=sorting_key, ascending=False).reset_index(drop=True)
+
+# get full name
+pairings_names = df_efficiency['pairing_hash'].apply(lambda x: df_concat.loc[df_concat['pairing_hash'] == x, 'full_name'].values[0])
+df_efficiency['names'] = pairings_names
+
+
+# print
+columns_to_keep = [sorting_key, 'names']
+df_efficiency = df_efficiency[columns_to_keep]
+
+st.write(df_efficiency)

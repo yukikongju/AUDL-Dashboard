@@ -4,9 +4,21 @@ import itertools
 
 from audl.stats.endpoints.gamestats import GameStats
 
+def load_players_efficiency_data(team_ext_id, selected_games, pairing_number):
+    # computing players efficiency
+    dfs = []
+    for game_id in selected_games:
+        tmp = compute_team_efficiency(game_id, team_ext_id, pairing_number)
+        dfs.append(tmp)
+    
+    # sum groupby 
+    df_concat = pd.concat(dfs)
+    df_concat = df_concat.reset_index().rename(columns={'index': 'pairing_hash'})
+
+    return df_concat
 
 @st.cache_data
-def compute_team_efficiency(game_id, team_ext_id, num_in_pairings, position_radiobox, efficiency_radiobox):
+def compute_team_efficiency(game_id, team_ext_id, num_in_pairings):
     """ 
     Given game_id, pairings
 
@@ -62,8 +74,6 @@ def compute_team_efficiency(game_id, team_ext_id, num_in_pairings, position_radi
     offensive_percentages, defensive_percentages, original_ids = [], [], []
     all_full_names = []
     for index, row in df_lineup.iterrows():
-        offensive_percentages.append(row['offense_win'] / (row['offense_win'] + row['offense_loss'] + row['offense_incomplete']))
-        defensive_percentages.append(row['defense_win'] / (row['defense_win'] + row['defense_loss'] + row['defense_incomplete']))
         pair_ids = lineup_dict.get(index)
         original_ids.append(pair_ids)
 
@@ -71,19 +81,8 @@ def compute_team_efficiency(game_id, team_ext_id, num_in_pairings, position_radi
         full_names = [get_player_full_name_from_id(df_game_players, pid) for pid in pair_ids]
         all_full_names.append(full_names)
 
-    df_lineup['offense_perc'] = offensive_percentages
-    df_lineup['defense_perc'] = defensive_percentages
     df_lineup['pairs_id'] = original_ids
     df_lineup['full_name'] = all_full_names
-
-    # sort by
-    sorting_key = _get_sorting_key(position_radiobox, efficiency_radiobox)
-    df_lineup = df_lineup.sort_values(by=sorting_key, ascending=False).reset_index(drop=True)
-
-    # print
-    #  columns_to_keep = ['full_name', sorting_key]
-    columns_to_keep = [sorting_key, 'full_name']
-    df_lineup = df_lineup[columns_to_keep]
 
     return df_lineup
     
