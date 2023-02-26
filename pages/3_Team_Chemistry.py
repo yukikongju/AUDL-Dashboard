@@ -79,9 +79,14 @@ df_efficiency = df_efficiency.sort_values(by=sorting_key, ascending=False).reset
 pairings_names = df_efficiency['pairing_hash'].apply(lambda x: df_concat.loc[df_concat['pairing_hash'] == x, 'full_name'].values[0])
 df_efficiency['names'] = pairings_names
 
-
 # print
 columns_to_keep = [sorting_key, 'names']
 df_efficiency = df_efficiency[columns_to_keep]
 
-st.write(df_efficiency)
+if sorting_key in ['offense_perc', 'defense_perc']:
+    st.dataframe(df_efficiency.style.format(subset=[sorting_key], formatter="{:.2f}"))
+else:
+    st.write(df_efficiency)
+
+
+

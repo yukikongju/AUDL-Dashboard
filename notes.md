@@ -78,7 +78,10 @@
 
 - [X] Get Lineup outcomes by points as json (audl API)
 - [X] Compute Players Efficiency
-- [ ] compute for all games
+- [X] compute for all games
+- [X] FIX: percentage pretty print
+- [ ] FIX: don't call API when changing pairings
+- [ ] FIX: off and defensive count are not accurate
 
 **Cluster**
 
