@@ -57,7 +57,6 @@ df_throws_distribution['perc'] = df_throws_distribution['count'] / num_throws
 df_throws_distribution = df_throws_distribution.sort_values(by=['count'], ascending=False).reset_index(drop=True)
 st.write(df_throws_distribution)
 
-
 #  ------------------------------------------------------------------------
 
 st.write('### Team Throwing Sequence')
@@ -82,11 +81,15 @@ else:
 
 
 # radio button: throw_type
-all_throws_choices = ['All']
-throws_choices = list(df_throws_concat['throw_type'].unique())
+unique_throws_choices = list(df_throws_concat['throw_type'].unique())
 if thrower_receiver_radiobox == 'Receiver':
-    throws_choices = [choice for choice in throws_choices if choice not in ['Throwaway', 'Pull']]
-all_throws_choices.extend(throws_choices)
+    thrower_receiver_throws_choices = [choice for choice in unique_throws_choices if choice not in ['Throwaway', 'Pull']]
+else:
+    thrower_receiver_throws_choices = unique_throws_choices
+
+
+all_throws_choices = ['All']
+all_throws_choices.extend(thrower_receiver_throws_choices)
 throws_radiobox = st.radio("Throws", all_throws_choices, horizontal=True)
 
 
@@ -100,3 +103,27 @@ else:
 df_top['perc'] = df_top['count'] / num_throws
 df_top = df_top.sort_values(by=['count'], ascending=False).reset_index(drop=True)
 st.write(df_top)
+
+#  ------------------------------------------------------------------------
+
+#  st.write("### Player Connections")
+
+if throws_radiobox in ['Throwaway', 'Pull']:
+    st.write('No graph available')
+else:
+    utils.graph.generate_connections_graph(df_throws_concat, throws_radiobox, thrower_receiver_radiobox)
+
+
+
+
+
+# radiobox: throws
+#  all_players_connections_throws_choices = ['All']
+#  all_players_connections_throws_choices.extend(unique_throws_choices)
+#  all_players_connections_throws_choices.remove('Throwaway')
+#  player_connections_throws_radiobox = st.radio('Throws', all_players_connections_throws_choices, horizontal=True)
+
+# generate graph
+#  graph = utils.graph.generate_connections_graph(df_throws_concat, player_connections_throws_radiobox)
+
+

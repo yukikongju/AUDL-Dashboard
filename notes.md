@@ -92,6 +92,14 @@
 
 - [ ] Make weighted graph for throws
 - [ ] get player picture?
+- [ ] add player audl page when clicking on node
+- [ ] Social Network Analysis Components: is the team system or individual based
+    - [ ] In and out degrees
+    - [ ] Betweeness:
+    - [ ] Reciprocity:
+    - [ ] Density:
+    - [ ] Link Analysis
+    - [ ] Community Detection
 
 **Throwing Location Analysis**
 

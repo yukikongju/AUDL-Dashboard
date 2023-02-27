@@ -11,3 +11,7 @@ html5lib
 seaborn
 plotly
 scikit-learn
+pyviz
+networkx
+streamlit-agraph
+bokeh

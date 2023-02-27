@@ -188,6 +188,7 @@ def compute_player_throwing_selection(game_id, player_ext_id):
     return df_player_throws
 
 
+#  @st.cache_data
 def compute_team_throwing_sequence(df_team_throws, sequence_length):
     # remove pulls 
     df_subset = df_team_throws[df_team_throws['throw_type'] != 'Pull']
