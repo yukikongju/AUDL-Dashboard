@@ -113,8 +113,6 @@ def compute_game_throwing_selection(game_id):
     away_events = events_response['awayEvents']
     df_game_players = game.get_players_metadata()
 
-    #  st.write(df_game_players)
-
     #
     df_home = compute_game_events(game_id, home_events)
     df_away = compute_game_events(game_id, away_events)
@@ -124,15 +122,19 @@ def compute_game_throwing_selection(game_id):
     df_concat['receiver_id'] = df_concat['receiver_id'].astype('Int64')
     df_concat['thrower_id'] = df_concat['thrower_id'].astype('Int64')
 
-    # compute thrower and receiver full names + team external id + TODO: player_ext_id
+    # compute thrower and receiver full names + team external id 
     receivers_full_name = compute_player_full_name_from_id(df_game_players, df_concat['receiver_id'])
     throwers_full_name = compute_player_full_name_from_id(df_game_players, df_concat['thrower_id'])
     team_external_ids = compute_player_column_from_id(df_game_players, df_concat['thrower_id'], 'team')
+    receivers_ext_id = compute_player_column_from_id(df_game_players, df_concat['receiver_id'], 'player.ext_player_id')
+    throwers_ext_id = compute_player_column_from_id(df_game_players, df_concat['thrower_id'], 'player.ext_player_id')
 
     #
     df_concat['receiver_full_name'] = receivers_full_name
     df_concat['thrower_full_name'] = throwers_full_name
     df_concat['team_ext_id'] = team_external_ids
+    df_concat['receiver_ext_id'] = receivers_ext_id
+    df_concat['thrower_ext_id'] = throwers_ext_id
 
     return df_concat, df_game_players
 
