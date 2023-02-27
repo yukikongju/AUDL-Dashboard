@@ -84,7 +84,7 @@ columns_to_keep = [sorting_key, 'names']
 df_efficiency = df_efficiency[columns_to_keep]
 
 if sorting_key in ['offense_perc', 'defense_perc']:
-    st.dataframe(df_efficiency.style.format(subset=[sorting_key], formatter="{:.2f}"))
+    st.dataframe(df_efficiency.style.format(subset=[sorting_key], formatter="{:.3f}"))
 else:
     st.write(df_efficiency)
 

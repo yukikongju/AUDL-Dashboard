@@ -127,5 +127,7 @@ Ideas:
 - [Streamlit agraph](https://github.com/ChrisDelClea/streamlit-agraph)
 - [Stanford CS224W - Analysis of Network Projects](http://snap.stanford.edu/class/cs224w-2017/projects.html)
 - [Custom url in streamlit](https://discuss.streamlit.io/t/custom-domain-for-streamlit-sharing/8751/5)
+- [streamlit agraph stroke width](https://discuss.streamlit.io/t/showing-off-the-streamlit-agraph-component/6712/8)
+- [pyvis interactive networks](https://discuss.streamlit.io/t/interactive-networks-graphs-with-pyvis/8344)
 
 
