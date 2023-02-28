@@ -11,7 +11,9 @@ html5lib
 seaborn
 plotly
 scikit-learn
+pyct
 pyviz
 networkx
 streamlit-agraph
 bokeh
+protobuf==3.20.1
