@@ -2,7 +2,6 @@ import streamlit as st
 import networkx as nx
 import pandas as pd
 import math
-#  import pyviz as vz
 from streamlit_agraph import agraph, Node, Edge, Config
 
 def generate_connections_graph(df_throws, throw_type, thrower_receiver_radiobox):

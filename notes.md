@@ -118,6 +118,11 @@ Ideas:
     * understanding throw selection relative to field position
     * throwing sequences: (dump-swing), (huck-dish), ()
 
+## Troubleshooting
+
+**Pyviz doens't work**
+
+
 ## Ressources
 
 

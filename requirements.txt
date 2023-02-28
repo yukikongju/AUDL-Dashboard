@@ -12,7 +12,6 @@ seaborn
 plotly
 scikit-learn
 pyct
-pyviz
 networkx
 streamlit-agraph
 bokeh
