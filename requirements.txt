@@ -16,3 +16,5 @@ networkx
 streamlit-agraph
 bokeh
 protobuf==3.20.1
+
+gymnasium

@@ -65,7 +65,7 @@
 
 **Player Throwing Selection**
 
-- [ ] Add foreside or breakside in Player Throwing selection
+- [ ] TODO: Add foreside or breakside in Player Throwing selection
 - [ ] add plots
 
 
@@ -91,6 +91,7 @@
 **Graph**
 
 - [ ] Make weighted graph for throws
+- [ ] TODO: add in/out degrees: 'throwed', 'received'
 - [ ] get player picture?
 - [ ] add player audl page when clicking on node
 - [ ] Social Network Analysis Components: is the team system or individual based
@@ -109,6 +110,7 @@
 
 ## Paper: Understanding Throwing Selection in Ultimate using Social Network Analysis
 
+- Why? determine if team strategy is player/team based and compare teams
 Ideas:
 - Previous work in other sports: NBA, NFL, 
 - The problem: 
@@ -117,6 +119,39 @@ Ideas:
     * define roles in audl: make cluster from throwing distribution
     * understanding throw selection relative to field position
     * throwing sequences: (dump-swing), (huck-dish), ()
+
+
+## Paper: Understanding best throwing decisions and disc location based on RL
+
+- Condition on team and season
+- Hypotheses: 
+    * Player Agnostic: doesn't take player abilities into account
+    * Position agnostic: doesn't take if player is cutter/thrower (throwing) 
+      (throwing abilities won't be the same)
+- How to simulate best decision using RL:
+    * Environment state: continuous/discrete
+    * Probability transition: weighted sum of success rate of throw inside range? + bayesian conditioning? (turnover or not, )
+    * 
+
+- Visualize throwing decision on the field
+
+## Paper: Understanding player fatigue across the game/season using time series analysis
+
+- Why? Load management
+- Performance Prediction: how will the player perform given they play n points next game
+- Conditioning
+- Decomposition, seasonality
+- Additional Questions: 
+    * if a player plays less, will it improve next games performance?
+
+- [ ] Fetch all throws for all games and save them in files
+- [ ] Compute throw success based on team (conditionned by: team, (x, y), throwing type)
+- [ ] Build RL environment
+	* Actions state: [types of throws] pass, dish, dump, huck
+	* Environment State: [throwing outcome] success, throwaway
+	* Reward: pass (+1), goal (+100), throwaway (-50)
+
+
 
 ## Troubleshooting
 
@@ -134,5 +169,6 @@ Ideas:
 - [Custom url in streamlit](https://discuss.streamlit.io/t/custom-domain-for-streamlit-sharing/8751/5)
 - [streamlit agraph stroke width](https://discuss.streamlit.io/t/showing-off-the-streamlit-agraph-component/6712/8)
 - [pyvis interactive networks](https://discuss.streamlit.io/t/interactive-networks-graphs-with-pyvis/8344)
+- [sibling package imports using setup.py](https://stackoverflow.com/questions/6323860/sibling-package-imports/50193944#50193944)
 
 
