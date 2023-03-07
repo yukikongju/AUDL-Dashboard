@@ -10,6 +10,7 @@ lxml
 html5lib
 seaborn
 plotly
+scipy
 scikit-learn
 pyct
 networkx

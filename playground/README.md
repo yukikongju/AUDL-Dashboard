@@ -12,10 +12,10 @@ Reinforcement Learning Environment:
     - gainer / distance travelled
     - point won: +100 if 80 < y < 100
 
-
-
+- [X] Fetch data: use royals 2022 data first
+- [ ] Initialize `Throwing` classes with season dataset
+    - [ ] Compute Field probability beforehand (for each rectangle in field)
 - [ ] Make environment: 
-- [ ] Fetch data
 - [ ] 
 
 ## Ressources
