@@ -66,7 +66,7 @@ def compute_game_events(game_id, tsg_events):
                 try: 
                     r_id = int(event['r']) # FIXME: investigate why no r sometimes
                     throw_dist = round(math.sqrt(x**2 + y**2), 3)
-                    row = [game_id, point, r_id, None, 'Pull', throw_dist, x, y] 
+                    row = [game_id, point, r_id, None, 'Pull', throw_dist, x, y, None, None] 
                     output.append(row)
                 except:
                     print('check error')
@@ -78,7 +78,7 @@ def compute_game_events(game_id, tsg_events):
                 if thrower_id:
                     receiver_id = r_id
                     throw_type, throw_side, throw_distance, x_delta, y_delta = get_throw_type(x_prev, y_prev, x, y)
-                    row = [game_id, point, thrower_id, receiver_id, throw_type, throw_distance, x_delta, y_delta]
+                    row = [game_id, point, thrower_id, receiver_id, throw_type, throw_distance, x_delta, y_delta, x, y]
                     output.append(row)
 
                 # updating thrower
@@ -89,7 +89,7 @@ def compute_game_events(game_id, tsg_events):
                 x = event['x']
                 y = event['y']
                 throw_type, throw_side, throw_distance, x_delta, y_delta = get_throw_type(x_prev, y_prev, x, y)
-                row = [game_id, point, thrower_id, None, 'Throwaway', throw_distance, x_delta, y_delta]
+                row = [game_id, point, thrower_id, None, 'Throwaway', throw_distance, x_delta, y_delta, x, y]
                 output.append(row)
                 thrower_id = None
             else:
@@ -97,7 +97,7 @@ def compute_game_events(game_id, tsg_events):
 
         print('---')
 
-    columns_names = ['game_id', 'point' ,'thrower_id', 'receiver_id', 'throw_type', 'throw_distance', 'x', 'y']
+    columns_names = ['game_id', 'point' ,'thrower_id', 'receiver_id', 'throw_type', 'throw_distance', 'x', 'y', 'x_field', 'y_field']
     df_throws = pd.DataFrame(output, columns=columns_names)
     df_throws['receiver_id'] = df_throws['receiver_id'].astype('Int64')
     df_throws['thrower_id'] = df_throws['thrower_id'].astype('Int64')
