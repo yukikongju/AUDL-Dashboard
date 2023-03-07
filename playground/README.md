@@ -21,4 +21,5 @@ Reinforcement Learning Environment:
 ## Ressources
 
 - [Building a RL Environment using OpenAI Gym](https://www.section.io/engineering-education/building-a-reinforcement-learning-environment-using-openai-gym/)
+- [Getting started tiwh OpenAI Gym](https://blog.paperspace.com/getting-started-with-openai-gym/)
 

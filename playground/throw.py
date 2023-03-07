@@ -9,7 +9,7 @@ def generate_normal_values(mean, std, n):
     """ 
     Generate n samples using gaussian distribution 
     """
-    return round(np.random.normal(loc=mean, scale=std, size=n), 3)
+    return np.random.normal(loc=mean, scale=std, size=n)
 
 
 class Throw(object):
@@ -82,8 +82,8 @@ class Throw(object):
         j = int((y_field + 20.0) // self.RECTANGLE_YARDS_Y)
 
         proba, mean_x, mean_y, std_x, std_y = self.field_probability[i, j]
-        x_throw = generate_normal_values(mean_x, std_x, 1)[0]
-        y_throw = generate_normal_values(mean_y, std_y, 1)[0]
+        x_throw = round(generate_normal_values(mean_x, std_x, 1)[0], 3)
+        y_throw = round(generate_normal_values(mean_y, std_y, 1)[0], 3)
 
         return x_throw, y_throw
         
