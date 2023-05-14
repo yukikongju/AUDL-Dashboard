@@ -107,4 +107,14 @@ else:
 df_top_receivers = df_top_receivers.sort_values(by=['count'], ascending=False).reset_index(drop=True)
 st.write(df_top_receivers)
 
+### Dashboard 3: Throw Completion Heatmap 
+
+st.write('### Throw Completion Heatmap')
+
+throws_heatmap_radiobutton = st.radio('Throw Heatmap', all_throws_choices, horizontal=True)
+
+
+heatmap = utils.throwing.get_heatmap_throws_completion(df_player_throws, throws_heatmap_radiobutton)
+
+
 

@@ -1,11 +1,16 @@
 import streamlit as st
 import pandas as pd
 import math
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from audl.stats.endpoints.seasonschedule import SeasonSchedule
 from audl.stats.endpoints.gamestats import GameStats
 
+
 from static.parameters import THROWS_TYPE_DICT, THROWS_TYPE_DICT_INVERSE
+from static.parameters import FIELD_WIDTH_IN_YARDS, FIELD_LENGTH_IN_YARDS, ENDZONE_LENGTH
 
 
 def get_throw_type(x1, y1, x2, y2):
@@ -21,7 +26,9 @@ def get_throw_type(x1, y1, x2, y2):
     # compute throw_type
     threshold_lateral = 15
     threshold_vertical = 40
-    if -threshold_lateral <= angle_degrees <= threshold_lateral and y_delta <= 0:
+    if (x_delta == 0.0) and (y_delta == 0.0):
+        return 'Stall'
+    elif -threshold_lateral <= angle_degrees <= threshold_lateral and y_delta <= 0:
         throw_type = 'Swing'
     elif -threshold_lateral <= angle_degrees <= threshold_lateral and y_delta > 0: 
         throw_type = 'Dish'
@@ -226,4 +233,72 @@ def compute_team_throwing_sequence(df_team_throws, sequence_length):
     df_sequence = df_sequence.drop(['hash'], axis=1)
 
     return df_sequence
+
+def get_heatmap_throws_completion(df_player_throws, throw_choice):
+    """
+    Computing heatmap
+    Interpolating missing cells by ponderating on gaussian + distance
+    """
+    # --- select throw
+    if throw_choice != 'All':
+        df = df_player_throws[(df_player_throws['throw_type'] == throw_choice) and (df_player_throws['throw_type'] != 'Pull')]
+    else:
+        df = df_player_throws[(df_player_throws['throw_type'] != 'Pull')]
+
+    df_throwaway = df_player_throws[df_player_throws['throw_type'] == 'Throwaway']
+
+    # --- compute completed/fail for each cells (if exists)
+    CELL_SIZE = 1
+    completion_count = np.zeros((120//CELL_SIZE, 56//CELL_SIZE))
+    throwaway_count = np.zeros((120//CELL_SIZE, 56//CELL_SIZE))
+
+    # count completion
+    for _, row in df.iterrows():
+        x_idx = int(row['x_field'] // CELL_SIZE) + ENDZONE_LENGTH // CELL_SIZE
+        y_idx = int(row['y_field'] // CELL_SIZE) 
+
+        completion_count[y_idx][x_idx] += 1
+
+    # count throwaway
+    for _, row in df_throwaway.iterrows():
+        # get throw type
+        throw_type = get_throw_type(0, 0, float(row['x']), float(row['y']))[0]
+        #  st.write(throw_type)
+        if (throw_type == throw_choice) or (throw_choice == 'All'):
+            x_idx = int(row['x_field'] // CELL_SIZE) + ENDZONE_LENGTH // CELL_SIZE
+            y_idx = int(row['y_field'] // CELL_SIZE) 
+            throwaway_count[y_idx][x_idx] += 1
+
+    # inverse axis
+    completion_count = completion_count[::-1, :]
+    throwaway_count = throwaway_count[::-1, :]
+
+    # --- compute initial heatmap without extrapolation
+    show_completion_heatmap(completion_count, throwaway_count)
+
+    # --- extrapolate for missing cells
+
+
+
+    pass
+    
+def show_completion_heatmap(completion_count: np.array, throwaway_count: np.array):
+    figsize = (8, 4)
+    fig, axes = plt.subplots(1, 2, figsize = figsize)
+
+    # creating the heatmaps
+    for ax, data in zip(axes, [completion_count, throwaway_count]):
+        heatmap = ax.imshow(data, cmap='Blues_r', interpolation='nearest')
+        ax.invert_yaxis()
+        colorbar = fig.colorbar(heatmap, ax=ax)
+
+    # setting title
+    axes[0].set_title('Completion Count')
+    axes[1].set_title('Throwaway Count')
+
+    # formatting layout
+    fig.tight_layout()
+
+    st.pyplot(fig)
+    
 
