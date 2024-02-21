@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 
-import utils
+#  import utils
+from utils.calendar import loading_season_calendar, get_season_unique_teams, get_team_external_id, get_team_games_id
+from utils.efficiency import load_players_efficiency_data, _get_sorting_key
 
 from static.parameters import SUPPORTED_SEASONS, CURRENT_SEASON
 
@@ -15,15 +17,15 @@ st.markdown("# Team Chemistry")
 season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS, index=SUPPORTED_SEASONS.index(CURRENT_SEASON))
 
 # computing season calendar
-df_calendar = utils.calendar.loading_season_calendar(season_selectbox)
+df_calendar = loading_season_calendar(season_selectbox)
 
 # selectbox: team
-team_selectbox = st.selectbox("Team", utils.calendar.get_season_unique_teams(df_calendar))
-team_ext_id = utils.calendar.get_team_external_id(df_calendar, team_selectbox)
+team_selectbox = st.selectbox("Team", get_season_unique_teams(df_calendar))
+team_ext_id = get_team_external_id(df_calendar, team_selectbox)
 
 # multiselect: games
 all_games_choices = ['All']
-games_choices = utils.calendar.get_team_games_id(df_calendar, team_selectbox)
+games_choices = get_team_games_id(df_calendar, team_selectbox)
 all_games_choices.extend(games_choices)
 game_multiselect = st.multiselect("Game", all_games_choices, default='All')
 
@@ -56,7 +58,7 @@ position_radiobox = st.radio("Position", ['Offense', 'Defense'], horizontal=True
 efficiency_radiobox = st.radio("Efficiency", ['Count', 'Percentage'], horizontal=True)
 
 
-df_concat = utils.efficiency.load_players_efficiency_data(team_ext_id, selected_games, pairing_number)
+df_concat = load_players_efficiency_data(team_ext_id, selected_games, pairing_number)
 
 # sum all pairings off/def wins
 df_efficiency = df_concat.groupby(['pairing_hash']).sum().reset_index()
@@ -72,7 +74,7 @@ df_efficiency['offense_perc'] = offensive_percentages
 df_efficiency['defense_perc'] = defensive_percentages
 
 # sort by
-sorting_key = utils.efficiency._get_sorting_key(position_radiobox, efficiency_radiobox)
+sorting_key = _get_sorting_key(position_radiobox, efficiency_radiobox)
 df_efficiency = df_efficiency.sort_values(by=sorting_key, ascending=False).reset_index(drop=True)
 
 # get full name

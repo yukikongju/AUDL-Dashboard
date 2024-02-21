@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 
-import utils
+#  import utils
+from utils.calendar import loading_season_calendar, get_season_unique_teams, get_team_external_id, get_team_games_id
+from utils.throwing import compute_team_throwing_sequence, compute_team_throwing_selection
+from utils.graph import generate_connections_graph
 
 from static.parameters import SUPPORTED_SEASONS, CURRENT_SEASON
 
@@ -10,17 +13,17 @@ st.markdown("# Team Throwing Selection")
 
 # selectbox: season
 season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS, index=SUPPORTED_SEASONS.index(CURRENT_SEASON))
-df_calendar = utils.calendar.loading_season_calendar(season_selectbox)
+df_calendar = loading_season_calendar(season_selectbox)
 
 # selectbox: team
-team_selectbox = st.selectbox("Team", utils.calendar.get_season_unique_teams(df_calendar))
-team_ext_id = utils.calendar.get_team_external_id(df_calendar, team_selectbox)
+team_selectbox = st.selectbox("Team", get_season_unique_teams(df_calendar))
+team_ext_id = get_team_external_id(df_calendar, team_selectbox)
 #  st.write(team_ext_id)
 
 
 # select games
 all_games_choices = ['All']
-games_choices = utils.calendar.get_team_games_id(df_calendar, team_selectbox)
+games_choices = get_team_games_id(df_calendar, team_selectbox)
 all_games_choices.extend(games_choices)
 game_multiselect = st.multiselect("Game", all_games_choices, default='All')
 
@@ -37,7 +40,7 @@ else:
 # compute team throwing dataset
 dfs = []
 for game_id in selected_games:
-    df_throws = utils.throwing.compute_team_throwing_selection(game_id, team_ext_id)
+    df_throws = compute_team_throwing_selection(game_id, team_ext_id)
     dfs.append(df_throws)
 df_throws_concat = pd.concat(dfs)
 
@@ -62,7 +65,7 @@ st.write(df_throws_distribution)
 st.write('### Team Throwing Sequence')
 
 sequence_length_radiobox = st.radio('Sequence Length', [2,3,4,5], horizontal=True)
-df_throwing_sequence = utils.throwing.compute_team_throwing_sequence(df_throws_concat, sequence_length_radiobox)
+df_throwing_sequence = compute_team_throwing_sequence(df_throws_concat, sequence_length_radiobox)
 st.write(df_throwing_sequence)
 
 
@@ -111,7 +114,7 @@ st.write(df_top)
 if throws_radiobox in ['Throwaway', 'Pull']:
     st.write('No graph available')
 else:
-    utils.graph.generate_connections_graph(df_throws_concat, throws_radiobox, thrower_receiver_radiobox)
+    generate_connections_graph(df_throws_concat, throws_radiobox, thrower_receiver_radiobox)
 
 
 

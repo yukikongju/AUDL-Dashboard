@@ -5,7 +5,10 @@ import pandas as pd
 
 from audl.stats.endpoints.playerstats import PlayerStats
 
-import utils
+#  import utils
+from utils.calendar import loading_season_calendar, load_season_players, get_season_unique_teams, get_team_id_from_team_name, get_team_games_id, find_games_id_with_city_abbrev
+from utils.throwing import compute_player_throwing_selection, get_heatmap_throws_completion
+
 
 from static.parameters import SUPPORTED_SEASONS, CURRENT_SEASON
 
@@ -16,13 +19,13 @@ st.markdown("# Player Throwing Selection")
 season_selectbox = st.selectbox("Season", SUPPORTED_SEASONS, index=SUPPORTED_SEASONS.index(CURRENT_SEASON))
 
 # filter by team
-df_calendar = utils.calendar.loading_season_calendar(season_selectbox)
-df_players = utils.calendar.load_season_players(season_selectbox)
+df_calendar = loading_season_calendar(season_selectbox)
+df_players = load_season_players(season_selectbox)
 filter_checkbox = st.checkbox("Filter by team")
 if filter_checkbox:
-    teams = utils.calendar.get_season_unique_teams(df_calendar)
+    teams = get_season_unique_teams(df_calendar)
     team_selectbox = st.selectbox("Team", teams)
-    team_id = utils.calendar.get_team_id_from_team_name(df_calendar, team_selectbox)
+    team_id = get_team_id_from_team_name(df_calendar, team_selectbox)
 
     # get players
     df_team_players = PlayerStats(season_selectbox, 'total', team_id).fetch_table()
@@ -42,12 +45,12 @@ player_ext_id = list(df_players[df_players['name'] == player_selectbox]['playerI
 # select game
 all_games_choices = ['All']
 if filter_checkbox:
-    games_choices = utils.calendar.get_team_games_id(df_calendar, team_selectbox)
+    games_choices = get_team_games_id(df_calendar, team_selectbox)
 else:
     if ',' in city_abrev: # FIXME: doesn't work if player is all-stars
-        games_choices = utils.calendar.find_games_id_with_city_abbrev(df_calendar, city_abrev2)
+        games_choices = find_games_id_with_city_abbrev(df_calendar, city_abrev2)
     else:
-        games_choices = utils.calendar.find_games_id_with_city_abbrev(df_calendar, city_abrev)
+        games_choices = find_games_id_with_city_abbrev(df_calendar, city_abrev)
 
 all_games_choices.extend(games_choices)
 game_multiselect = st.multiselect("Game", all_games_choices, default='All')
@@ -62,7 +65,7 @@ else:
 # fetch players throws selection
 dfs = []
 for game_id in selected_games:
-    df_player_throws = utils.throwing.compute_player_throwing_selection(game_id, player_ext_id)
+    df_player_throws = compute_player_throwing_selection(game_id, player_ext_id)
     dfs.append(df_player_throws)
 
 # concat dataframes
@@ -114,7 +117,7 @@ st.write('### Throw Completion Heatmap')
 throws_heatmap_radiobutton = st.radio('Throw Heatmap', all_throws_choices, horizontal=True)
 
 
-heatmap = utils.throwing.get_heatmap_throws_completion(df_player_throws, throws_heatmap_radiobutton)
+heatmap = get_heatmap_throws_completion(df_player_throws, throws_heatmap_radiobutton)
 
 
 
