@@ -1,1 +1,2 @@
-import static.parameters
+#  import static.parameters
+from . import parameters

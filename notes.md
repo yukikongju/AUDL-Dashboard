@@ -1,3 +1,7 @@
+Field Size: 
+53.5 yards wide; 80 yard long + 20 yards long
+df: y_field == length (0,120); x_field == (-28, 28)
+
 **Throwers and Receivers Dashboard**
 
 - Player: throw selection, teammate, both (by ~~game~~, season)
@@ -66,6 +70,7 @@
 **Player Throwing Selection**
 
 - [ ] TODO: Add foreside or breakside in Player Throwing selection
+- [ ] TODO: Throw Heatmap -> probability of completion on the field for each throw
 - [ ] add plots
 
 

@@ -3,6 +3,12 @@ SUPPORTED_SEASONS = [2021, 2022]
 SUPPORTED_STATS_SEASONS = ['Career', 2022, 2021, 2019, 2018, 2017, 2016, 2015,
     2014, 2013, 2012]
 
+### Field dimension
+FIELD_WIDTH_IN_YARDS = 55 # 53.5 irl; 40 yards USAU
+FIELD_LENGTH_IN_YARDS = 80
+ENDZONE_LENGTH = 20
+
+
 ### Team and Player Stats
 
 TEAM_STATS_PER_DICT = {'Total': 'total', 'Per game': 'game'}
